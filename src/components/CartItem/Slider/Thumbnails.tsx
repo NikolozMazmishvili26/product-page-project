@@ -7,11 +7,11 @@ import {
   product2Thumbnail,
   proudct3Thumbnail,
   product4Thumbnail,
-} from "../../assets";
+} from "../../../assets";
 
 // import component
 
-import { Thumbnail } from "../../components";
+import { Thumbnail } from "../..";
 
 // thumbnails array
 
@@ -52,7 +52,7 @@ export default Thumbnails;
 
 const ThumbnailContainer = styled.div`
   display: none;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     display: flex;
     justify-content: space-between;
   }

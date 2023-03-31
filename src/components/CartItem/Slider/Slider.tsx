@@ -11,10 +11,10 @@ import {
   //
   iconNext,
   iconPrevious,
-} from "../../assets";
+} from "../../../assets";
 
 // import component
-import { Thumbnails } from "../../components";
+import { Thumbnails } from "../..";
 
 // images array
 const images = [product1, product2, product3, product4];
@@ -67,11 +67,15 @@ function Slider() {
 export default Slider;
 
 const Container = styled.div`
-  max-width: 445px;
   width: 100%;
+  margin: auto;
   display: flex;
   flex-direction: column;
   row-gap: 32px;
+
+  @media screen and (min-width: 1110px) {
+    max-width: 450px;
+  }
 `;
 
 const SliderWrapper = styled.div`
@@ -82,8 +86,7 @@ const SliderWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  @media screen and (min-width: 1440px) {
-    margin-top: 90px;
+  @media screen and (min-width: 1110px) {
     height: 445px;
   }
 `;
@@ -95,7 +98,7 @@ const Slide = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     border-radius: 15px;
   }
 `;
@@ -113,7 +116,7 @@ const PreviousCircle = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     display: none;
   }
 `;

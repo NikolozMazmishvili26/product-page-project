@@ -1,20 +1,31 @@
 import { useState, useRef } from "react";
 import styled from "styled-components";
+import { cartItemsProps } from "../../App";
 
 // import icons
 import { iconMenu, logo, avatar, iconCart, iconClose } from "../../assets";
 
-function Header() {
+// import component
+import { Cart } from "../../components";
+
+function Header({
+  cartItems,
+  setCartItems,
+}: {
+  cartItems: cartItemsProps[];
+  setCartItems: React.Dispatch<React.SetStateAction<cartItemsProps[]>>;
+}) {
   //
   const [showMenu, setShowMenu] = useState(false);
+  const [showCart, setShowCart] = useState(false);
 
   //
-  const Backdropref = useRef<HTMLDivElement | null>(null);
+  const backdropRef = useRef<HTMLDivElement | null>(null);
 
   const handleBackdrop: React.MouseEventHandler<HTMLDivElement> | undefined = (
     event
   ) => {
-    if (event.target === Backdropref.current) {
+    if (event.target === backdropRef.current) {
       setShowMenu(false);
     }
   };
@@ -42,14 +53,27 @@ function Header() {
             </HeaderNav>
           </LeftSide>
           <RightSide>
-            <img src={iconCart} alt="cart" style={{ cursor: "pointer" }} />
+            <img
+              src={iconCart}
+              alt="cart"
+              style={{ cursor: "pointer" }}
+              onClick={() => setShowCart(true)}
+            />
             <Avatar src={avatar} alt="avatar" />
           </RightSide>
+          {/* cart component */}
+          {showCart && (
+            <Cart
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+              setShowCart={setShowCart}
+            />
+          )}
         </Container>
       </Wrapper>
       {/* show menu */}
       {showMenu && (
-        <Backdrop ref={Backdropref} onClick={handleBackdrop}>
+        <Backdrop ref={backdropRef} onClick={handleBackdrop}>
           <Menu showMenu={showMenu}>
             <img
               src={iconClose}
@@ -77,7 +101,7 @@ function Header() {
 export default Header;
 
 const Wrapper = styled.div`
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     &::after {
       content: "";
       width: 100%;
@@ -89,11 +113,12 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px 28px 24px;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     padding: 43px 0px 34px 0px;
   }
 `;
@@ -102,7 +127,7 @@ const LeftSide = styled.div`
   display: flex;
   align-items: center;
   column-gap: 16px;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     column-gap: 57px;
     align-items: flex-start;
   }
@@ -110,7 +135,7 @@ const LeftSide = styled.div`
 
 const MenuIcon = styled.img`
   cursor: pointer;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     display: none;
   }
 `;
@@ -118,7 +143,7 @@ const MenuIcon = styled.img`
 const HeaderNav = styled.div`
   display: none;
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     display: block;
   }
 `;
@@ -129,7 +154,7 @@ const RightSide = styled.div`
   display: flex;
   align-items: center;
   column-gap: 22px;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     column-gap: 47px;
   }
 `;
@@ -138,7 +163,7 @@ const Avatar = styled.img`
   width: 24px;
   height: 24px;
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     width: 50px;
     height: 50px;
   }
@@ -153,6 +178,7 @@ const Backdrop = styled.div`
   top: 0px;
   left: 0px;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
 
 const Menu = styled.div<{ showMenu: boolean }>`
@@ -172,7 +198,7 @@ const MenuList = styled.ul`
   flex-direction: column;
   row-gap: 20px;
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     flex-direction: row;
     row-gap: 0px;
     column-gap: 32px;
@@ -186,7 +212,7 @@ const MenuItem = styled.li`
   line-height: 26px;
   color: var(--very-dark-blue);
   cursor: pointer;
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1110px) {
     color: var(--dark-grayish-blue);
     font-size: 15px;
     line-height: 26px;

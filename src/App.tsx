@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
 // reset css
@@ -72,18 +73,28 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 // import components
-
 import { Header, CartItem } from "./components";
 
+export interface cartItemsProps {
+  id: string;
+  image: string;
+  productName: string;
+  money: number;
+  quantity: number;
+}
+
 function App() {
+  //
+  const [cartItems, setCartItems] = useState<cartItemsProps[]>([]);
+
   return (
     <>
       {/* css global styles */}
       <GlobalStyles />
       {/* container */}
       <Container>
-        <Header />
-        <CartItem />
+        <Header cartItems={cartItems} setCartItems={setCartItems} />
+        <CartItem cartItems={cartItems} setCartItems={setCartItems} />
       </Container>
     </>
   );
@@ -92,7 +103,7 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  max-width: 1440px;
+  max-width: 1110px;
   width: 100%;
   margin: auto;
 `;

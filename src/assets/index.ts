@@ -13,3 +13,6 @@ export { default as product4Thumbnail } from "./image-product-4-thumbnail.jpg";
 export { default as product4 } from "./image-product-4.jpg";
 export { default as iconNext } from "./icon-next.svg";
 export { default as iconPrevious } from "./icon-previous.svg";
+export { default as iconMinus } from "./icon-minus.svg";
+export { default as iconPlus } from "./icon-plus.svg";
+export { default as iconDelete } from "./icon-delete.svg";
