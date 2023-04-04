@@ -1,9 +1,14 @@
 import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 import { cartItemsProps } from "../../App";
 
 // import icons
 import { iconMenu, logo, avatar, iconCart, iconClose } from "../../assets";
+
+// import variants
+
+import { backdropVariant, menuVariant } from "./Variants";
 
 // import component
 import { Cart } from "../../components";
@@ -53,12 +58,23 @@ function Header({
             </HeaderNav>
           </LeftSide>
           <RightSide>
-            <img
-              src={iconCart}
-              alt="cart"
-              style={{ cursor: "pointer" }}
-              onClick={() => setShowCart(true)}
-            />
+            <CartBox>
+              {cartItems.length > 0 && (
+                <CartCircle>
+                  <CircleValue>
+                    {cartItems.map((cartItem) => {
+                      return cartItem.quantity;
+                    })}
+                  </CircleValue>
+                </CartCircle>
+              )}
+              <img
+                src={iconCart}
+                alt="cart"
+                style={{ cursor: "pointer" }}
+                onClick={() => setShowCart(true)}
+              />
+            </CartBox>
             <Avatar src={avatar} alt="avatar" />
           </RightSide>
           {/* cart component */}
@@ -73,8 +89,15 @@ function Header({
       </Wrapper>
       {/* show menu */}
       {showMenu && (
-        <Backdrop ref={backdropRef} onClick={handleBackdrop}>
-          <Menu showMenu={showMenu}>
+        <Backdrop
+          ref={backdropRef}
+          onClick={handleBackdrop}
+          showMenu={showMenu}
+          variants={backdropVariant}
+          initial="hidden"
+          animate="visible"
+        >
+          <Menu showMenu={showMenu} variants={menuVariant}>
             <img
               src={iconClose}
               alt="close"
@@ -162,6 +185,13 @@ const RightSide = styled.div`
 const Avatar = styled.img`
   width: 24px;
   height: 24px;
+  cursor: pointer;
+  transition-duration: 0.2s;
+
+  &:hover {
+    border: 2px solid var(--orange);
+    border-radius: 50%;
+  }
 
   @media screen and (min-width: 1110px) {
     width: 50px;
@@ -169,9 +199,36 @@ const Avatar = styled.img`
   }
 `;
 
+const CartBox = styled.div`
+  position: relative;
+  width: 28px;
+  height: 26px;
+`;
+
+const CartCircle = styled.div`
+  position: absolute;
+  width: 19px;
+  height: 13px;
+  background-color: var(--orange);
+  border-radius: 6.5px;
+  bottom: 20px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CircleValue = styled.p`
+  font-style: normal;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--white);
+`;
+
 // show menu
 
-const Backdrop = styled.div`
+const Backdrop = styled(motion.div)<{ showMenu: boolean }>`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -179,16 +236,26 @@ const Backdrop = styled.div`
   left: 0px;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  transform: ${(props) =>
+    props.showMenu ? "translate(0)" : "translate(-100%)"};
+  /* transition: all 0.2s ease-in;  */
+
+  @media screen and (min-width: 1110px) {
+    display: none;
+  }
 `;
 
-const Menu = styled.div<{ showMenu: boolean }>`
-  width: ${(props) => (props.showMenu ? "250px" : "0px")};
+const Menu = styled(motion.div)<{ showMenu: boolean }>`
+  width: 250px;
   height: 100vh;
   background-color: var(--white);
   padding-top: 25px;
   padding-left: 25px;
-  transition: width 0.3s ease-in-out;
+  transform: ${(props) =>
+    props.showMenu ? "translate(0)" : "translate(-100%)"};
+  /* transition: all 0.2s ease-in;  */
 `;
+
 const MenuNav = styled.nav`
   margin-top: 54px;
 `;
@@ -220,7 +287,7 @@ const MenuItem = styled.li`
     transition-duration: 0.2s;
 
     &:hover {
-      color: var(--black);
+      color: var(--orange);
     }
   }
 `;

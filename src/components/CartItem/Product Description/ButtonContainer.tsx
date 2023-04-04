@@ -134,11 +134,7 @@ const AddToCartButton = styled.button`
 
   &:hover {
     cursor: pointer;
-    background-color: hsl(
-      25.95505617977528,
-      89.8989898989899%,
-      61.1764705882353%
-    );
+    background-color: #ffab6a;
   }
 `;
 

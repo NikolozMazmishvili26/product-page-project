@@ -34,7 +34,7 @@ function SingleItem({
           </div>
           <PriceBox>
             <Price>${money}</Price>
-            <Quantity>x{quantity}</Quantity>
+            <Quantity>x {quantity}</Quantity>
             <TotalPrice>${money * quantity}</TotalPrice>
           </PriceBox>
         </DescriptionBox>
@@ -133,6 +133,6 @@ const CheckoutButton = styled.button`
   transition-duration: 0.2s;
 
   &:hover {
-    background-color: hsl(26.1, 93.45794392523365%, 58.0392156862745%);
+    background-color: #ffab6a;
   }
 `;

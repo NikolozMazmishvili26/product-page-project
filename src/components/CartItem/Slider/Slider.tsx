@@ -72,6 +72,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 32px;
+  z-index: 2;
 
   @media screen and (min-width: 1110px) {
     max-width: 450px;

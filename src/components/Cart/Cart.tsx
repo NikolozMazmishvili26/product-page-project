@@ -1,4 +1,7 @@
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
+//
 import { cartItemsProps } from "../../App";
 
 // import component
@@ -14,8 +17,33 @@ function Cart({
   setCartItems: React.Dispatch<React.SetStateAction<cartItemsProps[]>>;
   setShowCart: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  // container ref
+
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !(containerRef.current as any).contains(event.target)
+    ) {
+      setShowCart(false);
+    }
+  };
+
   return (
-    <Container>
+    <Container
+      ref={containerRef}
+      initial={{ y: "-100vw" }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", duration: 0.4 }}
+    >
       <CartContent>
         {/* cart header */}
         <Header>
@@ -25,16 +53,20 @@ function Cart({
         </Header>
         {/* cart content */}
         <Wrapper>
-          {cartItems.map((cartItem, Index) => {
-            return (
-              <SingleItem
-                key={Index}
-                cartItem={cartItem}
-                cartItems={cartItems}
-                setCartItems={setCartItems}
-              />
-            );
-          })}
+          {cartItems.length > 0 ? (
+            cartItems.map((cartItem, Index) => {
+              return (
+                <SingleItem
+                  key={Index}
+                  cartItem={cartItem}
+                  cartItems={cartItems}
+                  setCartItems={setCartItems}
+                />
+              );
+            })
+          ) : (
+            <EmptyTitle>Your cart is empty.</EmptyTitle>
+          )}
         </Wrapper>
       </CartContent>
     </Container>
@@ -43,13 +75,14 @@ function Cart({
 
 export default Cart;
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   width: 100%;
   position: absolute;
   top: 80px;
   left: 0px;
   padding-left: 8px;
   padding-right: 8px;
+  z-index: 9999;
 
   @media screen and (min-width: 540px) {
     max-width: 500px;
@@ -66,10 +99,10 @@ const Container = styled.div`
 `;
 
 const CartContent = styled.div`
+  position: relative;
   width: 100%;
   height: 256px;
   background-color: var(--white);
-  z-index: 999;
   border-radius: 10px;
   box-shadow: 0px 20px 50px -20px rgba(29, 32, 38, 0.503143);
 `;
@@ -97,3 +130,16 @@ const Title = styled.p`
 `;
 
 const Wrapper = styled.div``;
+
+const EmptyTitle = styled.h2`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  color: var(--dark-grayish-blue);
+`;

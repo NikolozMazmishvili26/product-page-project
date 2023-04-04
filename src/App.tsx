@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
 // reset css
@@ -85,7 +85,22 @@ export interface cartItemsProps {
 
 function App() {
   //
-  const [cartItems, setCartItems] = useState<cartItemsProps[]>([]);
+  const [cartItems, setCartItems] = useState<cartItemsProps[]>(() => {
+    const storedItems = localStorage.getItem("cartItems");
+    if (storedItems) {
+      try {
+        const parsedItems = JSON.parse(storedItems) as cartItemsProps[];
+        return parsedItems;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
     <>
